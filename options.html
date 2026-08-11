@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid Memory — Saved Records</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>Saved records</h1>
+        <p>All records below are stored only in this browser profile.</p>
+      </div>
+      <div class="toolbar">
+        <button id="exportBtn">Export JSON</button>
+        <label class="buttonlike" for="importFile">Import JSON</label>
+        <input id="importFile" type="file" accept="application/json,.json" hidden>
+        <button id="clearBtn" class="danger">Reset all data</button>
+      </div>
+    </header>
+
+    <div class="filter-row">
+      <input id="search" type="search" placeholder="Search URL, title or note">
+      <span id="count"></span>
+    </div>
+
+    <section id="records"></section>
+    <p id="empty" class="empty hidden">No saved records yet.</p>
+  </main>
+  <script src="options.js"></script>
+</body>
+</html>

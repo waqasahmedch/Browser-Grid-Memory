@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid Memory</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <div class="header">
+      <div>
+        <h1>Grid Memory</h1>
+        <div id="site" class="muted"></div>
+      </div>
+      <span id="statusBadge" class="badge">Checking…</span>
+    </div>
+
+    <section id="unsupported" class="panel hidden">
+      This page cannot be enabled. Open an HTTP or HTTPS page first.
+    </section>
+
+    <section id="disabledPanel" class="panel hidden">
+      <p>Enable Grid Memory only for this site. Data stays in this browser.</p>
+      <button id="enableBtn" class="primary">Enable on this site</button>
+    </section>
+
+    <section id="enabledPanel" class="hidden">
+      <div class="stats">
+        <div><strong id="visitCount">0</strong><span>Visits</span></div>
+        <div><strong id="lastVisited">—</strong><span>Last visited</span></div>
+      </div>
+
+      <label for="note">Note for this page</label>
+      <textarea id="note" rows="6" placeholder="Example: Checked this record; waiting for approval."></textarea>
+      <div id="saveStatus" class="save-status"></div>
+      <button id="saveBtn" class="primary">Save note</button>
+
+      <div class="actions">
+        <button id="manageBtn" class="secondary">Saved records</button>
+        <button id="disableBtn" class="danger-link">Disable site</button>
+      </div>
+
+      <div class="reset-section">
+        <button id="resetCurrentBtn" class="reset-current-button">Reset current URL</button>
+        <p class="reset-help">Deletes the note and visit history only for this exact page/record.</p>
+
+        <button id="resetBtn" class="reset-button">Reset all data</button>
+        <p class="reset-help">Deletes all notes, visit history and visit counters from this browser.</p>
+      </div>
+    </section>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>

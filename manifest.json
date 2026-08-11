@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Grid Memory",
+  "version": "0.3.0",
+  "description": "Locally remembers visited records and notes, then marks matching links when you return to a data grid.",
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab"
+  ],
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_title": "Grid Memory",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html"
+}
