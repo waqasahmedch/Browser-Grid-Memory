@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grid Memory - Demo Task Board</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #6b7280;
+      --line: #e6eaf0;
+      --header: #111827;
+      --accent: #2563eb;
+      --accent-soft: #eff6ff;
+      --shadow: 0 12px 35px rgba(17, 24, 39, 0.08);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 42px 24px 56px;
+    }
+
+    .hero {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    .demo-pill {
+      white-space: nowrap;
+      border: 1px solid #bfdbfe;
+      background: var(--accent-soft);
+      color: #1d4ed8;
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfe;
+    }
+
+    .toolbar-title {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .toolbar-meta {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 920px;
+    }
+
+    thead th {
+      text-align: left;
+      padding: 14px 16px;
+      background: var(--header);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    tbody td {
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody tr:hover {
+      background: #fafcff;
+    }
+
+    .task-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .task-link:hover {
+      text-decoration: underline;
+    }
+
+    .owner {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      background: #e5e7eb;
+      color: #374151;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #92400e;
+      background: #fef3c7;
+    }
+
+    .muted {
+      color: #9ca3af;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .detail-card {
+      padding: 26px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .detail-title {
+      margin: 0 0 20px;
+      font-size: 28px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .field {
+      padding: 15px 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fbfcfe;
+    }
+
+    .field-label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .field-value {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .description {
+      margin-top: 18px;
+      padding: 18px;
+      border-left: 4px solid var(--accent);
+      background: var(--accent-soft);
+      border-radius: 10px;
+      color: #334155;
+      line-height: 1.65;
+      font-size: 13px;
+    }
+
+    @media (max-width: 720px) {
+      .hero { align-items: flex-start; flex-direction: column; }
+      .demo-pill { white-space: normal; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .page { padding: 28px 14px 40px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">Grid Memory Demo</p>
+        <h1>Task Management Board</h1>
+        <p class="subtitle">
+          These records intentionally look almost identical. The only obvious difference is the creation date,
+          while each row points to a different URL parameter — the exact situation Grid Memory is designed for.
+        </p>
+      </div>
+      <div class="demo-pill">10 similar-looking records</div>
+    </div>
+
+    <section id="app"></section>
+
+    <div class="footer-note">
+      Open several “Fix the Issue” records, return to the grid, and let Grid Memory show which ones you already reviewed.
+    </div>
+  </main>
+
+  <script>
+    const records = [
+      { key: "1001", created: "02 Aug 2026" },
+      { key: "1002", created: "03 Aug 2026" },
+      { key: "1003", created: "04 Aug 2026" },
+      { key: "1004", created: "05 Aug 2026" },
+      { key: "1005", created: "06 Aug 2026" },
+      { key: "1006", created: "07 Aug 2026" },
+      { key: "1007", created: "08 Aug 2026" },
+      { key: "1008", created: "09 Aug 2026" },
+      { key: "1009", created: "10 Aug 2026" },
+      { key: "1010", created: "11 Aug 2026" }
+    ];
+
+    function showGrid() {
+      const rows = records.map(record => `
+        <tr>
+          <td>
+            <a class="task-link" href="?record=${encodeURIComponent(record.key)}">Fix the Issue</a>
+          </td>
+          <td>
+            <span class="owner">
+              <span class="avatar">U1</span>
+              User 1
+            </span>
+          </td>
+          <td><span class="status">Pending</span></td>
+          <td>${record.created}</td>
+          <td><span class="muted">—</span></td>
+          <td><span class="muted">—</span></td>
+        </tr>
+      `).join("");
+
+      document.getElementById("app").innerHTML = `
+        <div class="card">
+          <div class="toolbar">
+            <div class="toolbar-title">Tasks</div>
+            <div class="toolbar-meta">${records.length} records</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Task Name</th>
+                  <th>Owner</th>
+                  <th>Status</th>
+                  <th>Creation Date</th>
+                  <th>Due Date</th>
+                  <th>Completion Date</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function showDetail(recordKey) {
+      const record = records.find(r => r.key === recordKey);
+      if (!record) return showGrid();
+
+      document.getElementById("app").innerHTML = `
+        <div class="card detail-card">
+          <a class="back" href="${location.pathname}">← Back to task grid</a>
+
+          <h2 class="detail-title">Fix the Issue</h2>
+
+          <div class="detail-grid">
+            <div class="field">
+              <div class="field-label">Owner</div>
+              <div class="field-value">User 1</div>
+            </div>
+
+            <div class="field">
+              <div class="field-label">Status</div>
+              <div class="field-value"><span class="status">Pending</span></div>
+            </div>
+
+            <div class="field">
+              <div class="field-label">Creation Date</div>
+              <div class="field-value">${record.created}</div>
+            </div>
+
+            <div class="field">
+              <div class="field-label">Due Date</div>
+              <div class="field-value">—</div>
+            </div>
+
+            <div class="field">
+              <div class="field-label">Completion Date</div>
+              <div class="field-value">—</div>
+            </div>
+          </div>
+
+          <div class="description">
+            <strong>Task description:</strong><br />
+            Review the task details and take the required action. This demo intentionally keeps the visible content
+            almost identical across records so that remembering which item was already reviewed is difficult without
+            an external browser-side memory layer.
+          </div>
+        </div>
+      `;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const recordKey = params.get("record");
+
+    recordKey ? showDetail(recordKey) : showGrid();
+  </script>
+</body>
+</html>
